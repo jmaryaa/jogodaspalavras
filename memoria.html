@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,10 @@
         <div id="letras"></div>
         <input type="text" id="palavra" placeholder="Digite uma palavra...">
         <button onclick="verificarPalavra()">Verificar</button>
-        <p>Tentativas Restantes: <span id="tentativas"></span></p>
+        <p>Tentativas Restantes: <span id="tentativas">4</span></p>
+        <p>Score: <span id="score">0</span></p>
+        <button onclick="verPalavrasPossiveis()">Ver Palavras Possíveis</button>
+        <div id="palavras-possiveis"></div>
         <p id="mensagem"></p>
     </div>
     <script src="script.js"></script>

@@ -10,6 +10,7 @@ body {
 #letras {
     margin-bottom: 20px;
     font-size: 24px;
+    color: blue; /* Destaque em azul para as letras */
 }
 
 input[type="text"] {
@@ -23,6 +24,7 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    margin: 10px;
 }
 
 button:hover {
