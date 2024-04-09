@@ -1,6 +1,8 @@
 const vogais = ['a', 'e', 'i', 'o', 'u'];
 const consoantes = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
 
+const palavrasConhecidas = ["casa", "bola", "cachorro", "gato", "amor", "felicidade", "amigo", "família", "chuva", "sol", "vento", "lua", "estrela", "vida", "paz", "beleza"];
+
 let letras = [];
 let score = 0;
 let nivel = 1;
@@ -20,8 +22,8 @@ function iniciarJogo() {
         }
     }
     // Exibir letras
-    const letrasDestaque = letras.map(letra => `<span>${letra}</span>`).join(' ');
-    document.getElementById('letras').innerHTML = `Letras disponíveis: ${letrasDestaque}`;
+    const letrasDestaque = letras.map(letra => `<span>${letra}</span>`).join('');
+    document.getElementById('letras').innerHTML = letrasDestaque;
 }
 
 // Verificar palavra
@@ -72,15 +74,7 @@ function calcularScore(palavra) {
 
 // Ver palavras possíveis
 function verPalavrasPossiveis() {
-    const palavrasPossiveis = [];
-    for (let i = 0; i < letras.length; i++) {
-        for (let j = i + 2; j <= letras.length; j++) {
-            const palavra = letras.slice(i, j).join('');
-            if (!palavrasPossiveis.includes(palavra)) {
-                palavrasPossiveis.push(palavra);
-            }
-        }
-    }
+    const palavrasPossiveis = palavrasConhecidas.filter(palavra => letrasValidas(palavra));
     const palavrasPossiveisHTML = palavrasPossiveis.map(palavra => `<span>${palavra}</span>`).join(', ');
     document.getElementById('palavras-possiveis').innerHTML = `Palavras Possíveis: ${palavrasPossiveisHTML}`;
 }
