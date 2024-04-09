@@ -2,20 +2,14 @@ const vogais = ['a', 'e', 'i', 'o', 'u'];
 const consoantes = ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'];
 
 let letras = [];
-
-let tentativasRestantes = 4;
 let score = 0;
+let nivel = 1;
 
 // Inicializar o jogo
 function iniciarJogo() {
     // Limpar mensagens
     document.getElementById('mensagem').textContent = '';
     document.getElementById('palavras-possiveis').innerHTML = '';
-    // Resetar tentativas e score
-    tentativasRestantes = 4;
-    score = 0;
-    document.getElementById('tentativas').textContent = tentativasRestantes;
-    document.getElementById('score').textContent = score;
     // Gerar letras aleatórias
     letras = [];
     for (let i = 0; i < 20; i++) {
@@ -26,7 +20,8 @@ function iniciarJogo() {
         }
     }
     // Exibir letras
-    document.getElementById('letras').textContent = `Letras disponíveis: ${letras.join(' ')}`;
+    const letrasDestaque = letras.map(letra => `<span>${letra}</span>`).join(' ');
+    document.getElementById('letras').innerHTML = `Letras disponíveis: ${letrasDestaque}`;
 }
 
 // Verificar palavra
@@ -37,26 +32,18 @@ function verificarPalavra() {
         return;
     }
     if (letrasValidas(palavra)) {
-        if (palavra.length > 6) {
-            score += palavra.length * 2;
-        } else {
-            score += palavra.length;
-        }
+        const pontos = calcularScore(palavra);
+        score += pontos;
         document.getElementById('score').textContent = score;
-        document.getElementById('mensagem').textContent = `Parabéns! Você formou a palavra '${palavra}' e ganhou ${palavra.length} ponto(s).`;
+        document.getElementById('mensagem').textContent = `Parabéns! Você formou a palavra '${palavra}' e ganhou ${pontos} ponto(s).`;
         document.getElementById('palavra').value = '';
-        tentativasRestantes = 4;
-        document.getElementById('tentativas').textContent = tentativasRestantes;
-        iniciarJogo();
-    } else {
-        tentativasRestantes--;
-        document.getElementById('tentativas').textContent = tentativasRestantes;
-        if (tentativasRestantes === 0) {
-            document.getElementById('mensagem').textContent = `Fim de Jogo! Suas tentativas acabaram.`;
-            document.getElementById('palavra').setAttribute('disabled', 'disabled');
-        } else {
-            document.getElementById('mensagem').textContent = `Palavra inválida. Tente novamente!`;
+        if (score >= nivel * 100) {
+            nivel++;
+            iniciarJogo();
+            document.getElementById('mensagem').textContent = `Parabéns! Você passou para o nível ${nivel}.`;
         }
+    } else {
+        document.getElementById('mensagem').textContent = `Palavra inválida. Tente novamente!`;
     }
 }
 
@@ -74,13 +61,22 @@ function letrasValidas(palavra) {
     return true; // Todas as letras da palavra estão disponíveis
 }
 
+// Calcular score da palavra
+function calcularScore(palavra) {
+    let pontos = 0;
+    for (let letra of palavra) {
+        pontos += letra.charCodeAt(0) - 96; // 'a' vale 1, 'b' vale 2, ...
+    }
+    return pontos;
+}
+
 // Ver palavras possíveis
 function verPalavrasPossiveis() {
     const palavrasPossiveis = [];
     for (let i = 0; i < letras.length; i++) {
         for (let j = i + 2; j <= letras.length; j++) {
             const palavra = letras.slice(i, j).join('');
-            if (palavras.includes(palavra) && !palavrasPossiveis.includes(palavra)) {
+            if (!palavrasPossiveis.includes(palavra)) {
                 palavrasPossiveis.push(palavra);
             }
         }

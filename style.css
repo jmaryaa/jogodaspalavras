@@ -10,6 +10,9 @@ body {
 #letras {
     margin-bottom: 20px;
     font-size: 24px;
+}
+
+#letras span {
     color: blue; /* Destaque em azul para as letras */
 }
 
